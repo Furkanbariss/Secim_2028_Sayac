@@ -16,7 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
+
 }
 
 rootProject.name = "Secim 2028 Sayac"

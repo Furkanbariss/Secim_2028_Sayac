@@ -17,39 +17,58 @@ fun InfoScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Uygulama Hakkında",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            Text(
-                text = "Bu uygulama, Türkiye Cumhuriyeti'nin 2028 yılındaki Cumhurbaşkanlığı Seçimleri'ne kalan süreyi Yıl, Ay, Gün, Saat, Dakika ve Saniye cinsinden geri saymak için geliştirilmiştir.\n\nHedef tarih: 14 Mayıs 2028",
-                color = MaterialTheme.colorScheme.onBackground,
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = { navController.popBackStack() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 60.dp) // Reklamla içerik arasına boşluk
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text("Geri Dön", color = MaterialTheme.colorScheme.onPrimary)
+                Text(
+                    text = "Hakkında",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
+                Text(
+                    text = "Bu uygulama, 2028 yılında gerçekleştirilmesi beklenen Türkiye Cumhuriyeti Cumhurbaşkanlığı seçimlerine kalan süreyi; yıl, ay, gün, saat, dakika ve saniye cinsinden geri saymak ve bu süreyi takip edebilmek amacıyla geliştirilmiştir.",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = "Aksi yönde bir karar alınmadıkça, önümüzdeki Cumhurbaşkanlığı seçiminin 14 Mayıs 2028 tarihinde, Türkiye genel seçimleriyle aynı gün içinde gerçekleştirilecektir.",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = { navController.popBackStack() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                ) {
+                    Text("Geri Dön")
+                }
             }
+
+            // 📢 Alt kısma reklamı sabitliyoruz
+            AdMobBanner(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 50.dp)
+            )
         }
     }
 }

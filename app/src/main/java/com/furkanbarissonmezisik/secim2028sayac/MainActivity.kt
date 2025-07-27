@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
@@ -27,10 +28,17 @@ import androidx.navigation.compose.rememberNavController
 import com.furkanbarissonmezisik.secim2028sayac.ui.theme.Secim2028SayacTheme
 import java.util.*
 import java.util.concurrent.TimeUnit
+import com.google.android.gms.ads.MobileAds
+import com.furkanbarissonmezisik.secim2028sayac.AdMobBanner
+import androidx.compose.foundation.layout.BoxWithConstraints
+
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MobileAds.initialize(this) {} //AdMob'u başlat deriz
         setContent {
             val themeState = rememberThemeState()
 
@@ -88,107 +96,133 @@ fun CountdownScreen(navController: NavController) {
 
         onDispose { timer.cancel() }
     }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 50.dp, start = 36.dp, end = 16.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Button(
-                    onClick = { navController.navigate("info_screen") },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier.padding(end = 8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Info,
-                        contentDescription = "Bilgi",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-
-                Button(
-                    onClick = { navController.navigate("settings_screen") },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    modifier = Modifier.padding(end = 8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Settings,
-                        contentDescription = "Ayarlar",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-
+            val screenWidth = maxWidth
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxSize()
+                    .padding(bottom = 40.dp), // İçerikle reklam arasında boşluk
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "2028 CUMHURBAŞKANLIĞI SEÇİMİ",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 50.dp, start = 36.dp, end = 16.dp),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Button(
+                        onClick = { navController.navigate("info_screen") },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        contentPadding = PaddingValues(0.dp),
+                        shape = CircleShape,
+                        modifier = Modifier.size(50.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Bilgi",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Button(
+                        onClick = { navController.navigate("settings_screen") },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        ),
+                        contentPadding = PaddingValues(0.dp),
+                        shape = CircleShape,
+                        modifier = Modifier.size(50.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Ayarlar",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(30.dp)
+                        )
+                    }
+                }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(20.dp)) // içeriği biraz yukarı alıyoruz
 
-                Image(
-                    painter = painterResource(id = R.drawable.turkey_flag),
-                    contentDescription = "Türk Bayrağı",
-                    modifier = Modifier.size(width = 80.dp, height = 50.dp)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "Geriye kalan süre",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Normal
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                when (targetDatePassed) {
-                    1L -> Text(
-                        text = "Hedef Tarih Geçti!",
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.width(40.dp))
+                    Spacer(modifier = Modifier.height(64.dp))
+                    Text(
+                        text = "2028 CUMHURBAŞKANLIĞI SEÇİMİ",
                         color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.ExtraBold
+                        fontSize = 23.sp,
+                        fontWeight = FontWeight.Bold
                     )
 
-                    2L -> Text(
-                        text = "Geri Sayım Tamamlandı!",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 32.sp,
-                        fontWeight = FontWeight.ExtraBold
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.turkey_flag),
+                        contentDescription = "Türk Bayrağı",
+                        modifier = Modifier.size(width = 80.dp, height = 50.dp)
                     )
 
-                    else -> {
-                        CountdownDisplay(remainingMillis)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "Geriye kalan süre",
+                        color = MaterialTheme.colorScheme.onBackground,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+
+                    when (targetDatePassed) {
+                        1L -> Text(
+                            text = "Hedef Tarih Geçti!",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                        2L -> Text(
+                            text = "Geri Sayım Tamamlandı!",
+                            color = MaterialTheme.colorScheme.onBackground,
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                        else -> {
+                            CountdownDisplay(remainingMillis)
+                        }
                     }
                 }
             }
+
+            AdMobBanner(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 50.dp)
+            )
         }
     }
 }
+
 
 @Composable
 fun CountdownDisplay(millisUntilFinished: Long) {
@@ -249,6 +283,8 @@ fun CountdownDisplay(millisUntilFinished: Long) {
                 Text(text = it, color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
+
     }
 }
 
