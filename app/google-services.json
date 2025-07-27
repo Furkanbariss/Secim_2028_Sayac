@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1015435815852",
+    "project_id": "secim-sayaci-71de4",
+    "storage_bucket": "secim-sayaci-71de4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015435815852:android:a051774f656f7d4d596809",
+        "android_client_info": {
+          "package_name": "com.furkanbarissonmezisik.secim2028sayac"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDglSYGOn4QkrvngOrOfxf6N0JOlYlZN0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
