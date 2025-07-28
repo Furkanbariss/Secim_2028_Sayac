@@ -21,7 +21,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
+            android:label="SEÇİM SAYAÇ"
             android:theme="@style/Theme.Secim2028Sayac">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

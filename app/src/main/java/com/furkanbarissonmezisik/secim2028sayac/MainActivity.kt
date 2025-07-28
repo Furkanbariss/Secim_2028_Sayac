@@ -5,9 +5,11 @@ import android.os.CountDownTimer
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
@@ -15,6 +17,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,20 +34,21 @@ import java.util.concurrent.TimeUnit
 import com.google.android.gms.ads.MobileAds
 import com.furkanbarissonmezisik.secim2028sayac.AdMobBanner
 import androidx.compose.foundation.layout.BoxWithConstraints
-
-
-
+import androidx.compose.ui.layout.ContentScale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MobileAds.initialize(this) {} //AdMob'u başlat deriz
+        MobileAds.initialize(this) {}
         setContent {
             val themeState = rememberThemeState()
-
             Secim2028SayacTheme(darkTheme = themeState.isDark) {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "countdown_screen") {
+                   /*
+                    composable("splash_screen") {
+                        SplashScreen(navController = navController)
+                    }*/
                     composable("countdown_screen") {
                         CountdownScreen(navController = navController)
                     }
@@ -59,7 +63,31 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+/* Bu ksım iptal edilmiştir
+@Composable
+fun SplashScreen(navController: NavController) {
+    LaunchedEffect(true) {
+        kotlinx.coroutines.delay(50) // 1 saniye bekle
+        navController.navigate("countdown_screen") {
+            popUpTo("splash_screen") { inclusive = true }
+        }
+    }
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "SEÇİM SAYAÇ",
+            fontSize = 30.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.White
+        )
+    }
+}
+*/
 @Composable
 fun CountdownScreen(navController: NavController) {
     var remainingMillis by remember { mutableLongStateOf(0L) }
@@ -67,7 +95,7 @@ fun CountdownScreen(navController: NavController) {
 
     DisposableEffect(Unit) {
         val targetCalendar = Calendar.getInstance().apply {
-            set(2028, Calendar.MAY, 14, 0, 0, 0)
+            set(2028, Calendar.JUNE, 14, 0, 0, 0)
             set(Calendar.MILLISECOND, 0)
         }
 
@@ -101,114 +129,117 @@ fun CountdownScreen(navController: NavController) {
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-
         BoxWithConstraints(
             modifier = Modifier.fillMaxSize()
         ) {
             val screenWidth = maxWidth
+            val x = null
+
+            // 1. Arka plan görseli
+            Image(
+                painter = painterResource(id = R.drawable.background_picture), // kendi dosya adınla değiştir
+                contentDescription = "Arka Plan",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+            )
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(bottom = 40.dp), // İçerikle reklam arasında boşluk
+                    .padding(bottom = 70.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 50.dp, start = 36.dp, end = 16.dp),
+                        .padding(top = 32.dp, end = 16.dp),
                     horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Button(
-                        onClick = { navController.navigate("info_screen") },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        contentPadding = PaddingValues(0.dp),
-                        shape = CircleShape,
-                        modifier = Modifier.size(50.dp)
-                    ) {
+                    IconButton(onClick = { navController.navigate("info_screen") }) {
                         Icon(
                             imageVector = Icons.Default.Info,
                             contentDescription = "Bilgi",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(30.dp)
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Button(
-                        onClick = { navController.navigate("settings_screen") },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            contentColor = MaterialTheme.colorScheme.onPrimary
-                        ),
-                        contentPadding = PaddingValues(0.dp),
-                        shape = CircleShape,
-                        modifier = Modifier.size(50.dp)
-                    ) {
+                    IconButton(onClick = { navController.navigate("settings_screen") }) {
                         Icon(
                             imageVector = Icons.Default.Settings,
                             contentDescription = "Ayarlar",
-                            tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(30.dp)
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp)) // içeriği biraz yukarı alıyoruz
+                Spacer(modifier = Modifier.height(8.dp))
 
-                Column(
+                Image(
+                    painter = painterResource(id = R.drawable.turkey_flag),
+                    contentDescription = "Türk Bayrağı",
+                    modifier = Modifier.size(width = 60.dp, height = 40.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "2028",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 30.sp,
+                    fontWeight = FontWeight.ExtraBold
+                )
+                Text(
+                    text = "CUMHURBAŞKANLIĞI SEÇİMİ",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Seçim tarihi: 14 Haziran 2028",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(8.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        .padding(16.dp)
                 ) {
-                    Spacer(modifier = Modifier.width(40.dp))
-                    Spacer(modifier = Modifier.height(64.dp))
-                    Text(
-                        text = "2028 CUMHURBAŞKANLIĞI SEÇİMİ",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 23.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Image(
-                        painter = painterResource(id = R.drawable.turkey_flag),
-                        contentDescription = "Türk Bayrağı",
-                        modifier = Modifier.size(width = 80.dp, height = 50.dp)
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Text(
-                        text = "Geriye kalan süre",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Normal
-                    )
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-
-                    when (targetDatePassed) {
-                        1L -> Text(
-                            text = "Hedef Tarih Geçti!",
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = "Geriye kalan süre",
                             color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.ExtraBold
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.SemiBold
                         )
-                        2L -> Text(
-                            text = "Geri Sayım Tamamlandı!",
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                        else -> {
-                            CountdownDisplay(remainingMillis)
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        when (targetDatePassed) {
+                            1L -> Text(
+                                text = "Hedef Tarih Geçti!",
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                            2L -> Text(
+                                text = "Geri Sayım Tamamlandı!",
+                                color = MaterialTheme.colorScheme.onBackground,
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                            else -> CountdownDisplay(remainingMillis)
                         }
                     }
                 }
@@ -223,18 +254,18 @@ fun CountdownScreen(navController: NavController) {
     }
 }
 
-
 @Composable
 fun CountdownDisplay(millisUntilFinished: Long) {
     val currentCalendar = Calendar.getInstance()
     val targetCalendar = Calendar.getInstance().apply {
-        set(2028, Calendar.MAY, 14, 0, 0, 0)
+        set(2028, Calendar.JUNE, 14, 0, 0, 0)
         set(Calendar.MILLISECOND, 0)
     }
 
     var diffYears = targetCalendar.get(Calendar.YEAR) - currentCalendar.get(Calendar.YEAR)
     var diffMonths = targetCalendar.get(Calendar.MONTH) - currentCalendar.get(Calendar.MONTH)
-    var diffDays = targetCalendar.get(Calendar.DAY_OF_MONTH) - currentCalendar.get(Calendar.DAY_OF_MONTH)
+    var diffDays =
+        targetCalendar.get(Calendar.DAY_OF_MONTH) - currentCalendar.get(Calendar.DAY_OF_MONTH)
 
     if (diffDays < 0) {
         diffMonths--
@@ -251,40 +282,62 @@ fun CountdownDisplay(millisUntilFinished: Long) {
     val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) % 60
     val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = String.format("%01d:%02d:%02d", diffYears, diffMonths, diffDays),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 56.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.width(280.dp)
+    Surface(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f), // daha opak hale getirdik
+        shape = RoundedCornerShape(16.dp),
+        tonalElevation = 4.dp,
+        shadowElevation = 4.dp
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            listOf("YIL", "AY", "GÜN").forEach {
-                Text(text = it, color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+            Text(
+                text = String.format("%02d %02d %02d %02d", diffYears, diffMonths, diffDays, hours),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 48.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.width(250.dp)
+            ) {
+                listOf("YIL", "AY", "GÜN", "SAAT").forEach {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = String.format("%02d:%02d", minutes, seconds),
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 48.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier.width(150.dp)
+            ) {
+                listOf("DAKİKA", "SANİYE").forEach {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = String.format("%02d:%02d:%02d", hours, minutes, seconds),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontSize = 56.sp,
-            fontWeight = FontWeight.ExtraBold
-        )
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier.width(280.dp)
-        ) {
-            listOf("SAAT", "DAKİKA", "SANİYE").forEach {
-                Text(text = it, color = MaterialTheme.colorScheme.onBackground, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
     }
 }
 
