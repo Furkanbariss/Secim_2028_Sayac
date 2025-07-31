@@ -35,12 +35,21 @@ import com.google.android.gms.ads.MobileAds
 import com.furkanbarissonmezisik.secim2028sayac.AdMobBanner
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.ui.layout.ContentScale
+import androidx.glance.appwidget.updateAll
+import com.furkanbarissonmezisik.secim2028sayac.widget.Secim2028ExtendedWidget
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MobileAds.initialize(this) {}
+
+
         setContent {
+            val context = LocalContext.current
+
+            LaunchedEffect(Unit) {
+                Secim2028ExtendedWidget().updateAll(context)
+            }
             val themeState = rememberThemeState()
             Secim2028SayacTheme(darkTheme = themeState.isDark) {
                 val navController = rememberNavController()
