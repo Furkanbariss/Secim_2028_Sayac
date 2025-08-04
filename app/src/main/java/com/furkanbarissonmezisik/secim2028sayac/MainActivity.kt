@@ -104,7 +104,7 @@ fun CountdownScreen(navController: NavController) {
 
     DisposableEffect(Unit) {
         val targetCalendar = Calendar.getInstance().apply {
-            set(2028, Calendar.JUNE, 14, 0, 0, 0)
+            set(2028, Calendar.JUNE, 14, 7, 0, 0)
             set(Calendar.MILLISECOND, 0)
         }
 

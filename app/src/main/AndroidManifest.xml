@@ -42,6 +42,8 @@
         </receiver>
 
 
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
