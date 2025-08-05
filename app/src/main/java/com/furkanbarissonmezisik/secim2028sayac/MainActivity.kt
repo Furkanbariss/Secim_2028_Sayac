@@ -146,7 +146,7 @@ fun CountdownScreen(navController: NavController) {
 
             // 1. Arka plan görseli
             Image(
-                painter = painterResource(id = R.drawable.background_picture), // kendi dosya adınla değiştir
+                painter = painterResource(id = R.drawable.main_background), // kendi dosya adınla değiştir
                 contentDescription = "Arka Plan",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -187,13 +187,13 @@ fun CountdownScreen(navController: NavController) {
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))
-
+                /*
                 Image(
                     painter = painterResource(id = R.drawable.turkey_flag),
                     contentDescription = "Türk Bayrağı",
                     modifier = Modifier.size(width = 60.dp, height = 40.dp)
                 )
-
+                */
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
