@@ -98,7 +98,7 @@ Secim_2028_Sayac/
 
 | Ana Ekran Widget | Tema (Koyu) | Tema (Açık) |
 |------------------|-------------|-------------|
-| ![Widget](screenshots/widget.png) | ![Dark](screenshots/dark_mode.png) | ![Light](screenshots/light_mode.png) |
+| ![Widget](screenshots/widget.png) | ![Dark](screenshots/light_mode.png) | ![Light](screenshots/dark_mode.png) |
 
 
 ---
